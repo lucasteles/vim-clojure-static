@@ -41,9 +41,9 @@ let s:clojure_syntax_keywords = {
 let s:keyword_reserved_words = ["contains", "oneline", "concealends"]
 let s:keyword_reserved_re    = "'" . '\<\(' . join(s:keyword_reserved_words, '\|') . '\)\>' . "'"
 
-function! s:syntax_keyword(dict)	function! s:syntax_keyword(dict)
-	for key in keys(a:dict)		for key in keys(a:dict)
-		execute 'syntax keyword' key join(a:dict[key], ' ')			let filtered = filter(copy(a:dict[key]), 'v:val !~ ' . s:keyword_reserved_re)
+function! s:syntax_keyword(dict)
+	for key in keys(a:dict)
+		let filtered = filter(copy(a:dict[key]), 'v:val !~ ' . s:keyword_reserved_re)
 		execute 'syntax keyword' key join(filtered, ' ')
 
 		let removed  = filter(copy(a:dict[key]), 'v:val =~ ' . s:keyword_reserved_re)
@@ -52,6 +52,7 @@ function! s:syntax_keyword(dict)	function! s:syntax_keyword(dict)
 		endif
 	endfor
 endfunction
+
 
 if exists('b:clojure_syntax_without_core_keywords') && b:clojure_syntax_without_core_keywords
 	" Only match language specials and primitives
